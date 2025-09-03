@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notre boutique{% endblock %}
+
+{% block body %}
+<h1>🛍️ Nos montres</h1>
+
+<div class="row">
+    {% for montre in montres %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                {% if montre.imageUrl %}
+                    <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ montre.nom }}</h5>
+                    <p class="card-text">{{ montre.prix }} €</p>
+                    <a href="{{ path('app_boutique_detail', {id: montre.id}) }}" class="btn btn-primary">Voir détails</a>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucune montre trouvée.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ montre.nom }}{% endblock %}
+
+{% block body %}
+<a href="{{ path('app_boutique') }}" class="btn btn-secondary mb-3">← Retour à la boutique</a>
+
+<div class="row">
+    <div class="col-md-6">
+        {% if montre.imageUrl %}
+            <img src="{{ montre.imageUrl }}" class="img-fluid" alt="{{ montre.nom }}">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h2>{{ montre.nom }}</h2>
+        <p><strong>Prix :</strong> {{ montre.prix }} €</p>
+        <p><strong>Stock :</strong> {{ montre.stock }}</p>
+        <p>{{ montre.description }}</p>
+    </div>
+</div>
+{% endblock %}

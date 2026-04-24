@@ -1,0 +1,1 @@
+{"version":2,"defects":{"App\\Tests\\Controller\\BoutiqueControllerTest::testIndex":7},"times":{"App\\Tests\\Controller\\BoutiqueControllerTest::testIndex":0.211,"App\\Tests\\Controller\\CategorieControllerTest::testIndex":0.007,"App\\Tests\\Controller\\MarqueControllerTest::testIndex":0.004,"App\\Tests\\Controller\\MontreControllerTest::testIndex":0.004}}

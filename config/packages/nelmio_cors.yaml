@@ -1,0 +1,14 @@
+nelmio_cors:
+    defaults:
+        allow_origin: ['*'] # Changez l'origine si nécessaire
+        allow_credentials: true
+        allow_headers: ['Content-Type', 'Authorization', 'X-Requested-With']
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        expose_headers: ['Link']
+        max_age: 3600
+    paths:
+        '^/': # Applique les règles CORS à toutes les routes
+            allow_origin: ['*']
+            allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+            allow_headers: ['Content-Type', 'Authorization', 'X-Requested-With']
+            max_age: 3600

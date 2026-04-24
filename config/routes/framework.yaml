@@ -1,4 +1,8 @@
 when@dev:
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'
+<<<<<<< HEAD
         prefix: /_error
+=======
+        prefix: /_error
+>>>>>>> 43fbb94 (Initial project Symfony boutique)

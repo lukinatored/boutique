@@ -13,8 +13,29 @@ class Categorie
     #[ORM\Column]
     private ?int $id = null;
 
+<<<<<<< HEAD
+=======
+    #[ORM\Column(length: 50)]
+    private ?string $nom = null;
+
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
     public function getId(): ?int
     {
         return $this->id;
     }
+<<<<<<< HEAD
+=======
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
 }

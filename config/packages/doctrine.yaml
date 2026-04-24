@@ -22,6 +22,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+<<<<<<< HEAD
+=======
+        controller_resolver:
+            auto_mapping: false
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
 
 when@test:
     doctrine:
@@ -47,4 +52,8 @@ when@prod:
                 doctrine.result_cache_pool:
                     adapter: cache.app
                 doctrine.system_cache_pool:
+<<<<<<< HEAD
                     adapter: cache.system
+=======
+                    adapter: cache.system
+>>>>>>> 43fbb94 (Initial project Symfony boutique)

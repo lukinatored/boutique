@@ -1,26 +1,64 @@
 {% extends 'base.html.twig' %}
 
+<<<<<<< HEAD
 {% block title %}Notre boutique{% endblock %}
 
 {% block body %}
 <h1>🛍️ Nos montres</h1>
+=======
+{% block title %}Boutique{% endblock %}
+
+{% block body %}
+<h1>Nos Montres</h1>
+
+<form method="get" class="mb-3">
+    <select name="categorie" class="form-select d-inline w-auto">
+        <option value="">Toutes catégories</option>
+        {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if selectedCategorie == cat.id %}selected{% endif %}>{{ cat.nom }}</option>
+        {% endfor %}
+    </select>
+    <select name="marque" class="form-select d-inline w-auto">
+        <option value="">Toutes marques</option>
+        {% for m in marques %}
+            <option value="{{ m.id }}" {% if selectedMarque == m.id %}selected{% endif %}>{{ m.nom }}</option>
+        {% endfor %}
+    </select>
+    <button class="btn btn-primary">Filtrer</button>
+</form>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
 
 <div class="row">
     {% for montre in montres %}
         <div class="col-md-4">
+<<<<<<< HEAD
             <div class="card mb-4 shadow-sm">
                 {% if montre.imageUrl %}
                     <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+=======
+            <div class="card mb-3">
+                {% if montre.imageUrl %}
+                <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ montre.nom }}</h5>
                     <p class="card-text">{{ montre.prix }} €</p>
+<<<<<<< HEAD
                     <a href="{{ path('app_boutique_detail', {id: montre.id}) }}" class="btn btn-primary">Voir détails</a>
+=======
+                    <a href="{{ path('app_boutique_detail', {'id': montre.id}) }}" class="btn btn-primary">Détails</a>
+                    <a href="{{ path('app_panier_ajouter', {'id': montre.id}) }}" class="btn btn-success">Ajouter au panier</a>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
                 </div>
             </div>
         </div>
     {% else %}
+<<<<<<< HEAD
         <p>Aucune montre trouvée.</p>
+=======
+        <p>Aucune montre disponible.</p>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
     {% endfor %}
 </div>
 {% endblock %}

@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+<<<<<<< HEAD
     <title>{% block title %}Ma Boutique{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
@@ -22,5 +23,19 @@
     <main class="container">
         {% block body %}{% endblock %}
     </main>
+=======
+    <title>{% block title %}Boutique{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ path('app_accueil') }}">Ma Boutique</a>
+    <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_boutique') }}">Boutique</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_panier') }}">Panier</a></li>
+    </ul>
+</nav>
+<div class="container mt-4">{% block body %}{% endblock %}</div>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
 </body>
 </html>

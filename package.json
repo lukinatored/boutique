@@ -1,0 +1,20 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "^4.7.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "postcss-loader": "^8.1.1",
+    "tailwindcss": "^3.4.12",
+    "webpack-notifier": "^1.15.0"
+  },
+  "scripts": {
+    "dev": "encore dev",
+    "dev-server": "encore dev-server",
+    "build": "encore production",
+    "watch": "encore dev --watch"
+  },
+  "dependencies": {
+    "flowbite": "^2.5.1",
+    "lucide": "^0.441.0"
+  }
+}

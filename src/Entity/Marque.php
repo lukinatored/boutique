@@ -2,29 +2,24 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
+use App\Repository\MarqueRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategorieRepository::class)]
-class Categorie
+#[ORM\Entity(repositoryClass: MarqueRepository::class)]
+class Marque
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-<<<<<<< HEAD
-=======
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
->>>>>>> 43fbb94 (Initial project Symfony boutique)
     public function getId(): ?int
     {
         return $this->id;
     }
-<<<<<<< HEAD
-=======
 
     public function getNom(): ?string
     {
@@ -37,5 +32,4 @@ class Categorie
 
         return $this;
     }
->>>>>>> 43fbb94 (Initial project Symfony boutique)
 }

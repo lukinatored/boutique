@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.nom }} - WatchShop{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-5x text-secondary"></i>
+                <p class="text-muted mt-2">Image de la montre</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <h1>{{ produit.nom }}</h1>
+        <p class="price display-6">{{ produit.prix|number_format(2, ',', ' ') }} €</p>
+        <p class="text-muted">Stock: {{ produit.stock }}</p>
+        <p>{{ produit.description }}</p>
+        <a href="{{ path('app_cart_add', {'id': produit.id}) }}" class="btn btn-success btn-lg w-100">Ajouter au panier</a>
+        <a href="{{ path('app_produits') }}" class="btn btn-secondary w-100 mt-2">Retour</a>
+    </div>
+</div>
+{% endblock %}

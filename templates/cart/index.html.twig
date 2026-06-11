@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier - WatchShop{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Mon panier</h1>
+
+{% if items|length > 0 %}
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr><th>Produit</th><th>Prix</th><th>Quantité</th><th>Total</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.produit.nom }}</td>
+                    <td>{{ item.produit.prix|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ item.quantite }}</td>
+                    <td>{{ (item.produit.prix * item.quantite)|number_format(2, ',', ' ') }} €</td>
+                    <td><a href="{{ path('app_cart_remove', {'id': item.produit.id}) }}" class="btn btn-danger btn-sm">Supprimer</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="table-dark"><td colspan="3" class="text-end"><strong>Total :</strong></td><td colspan="2"><strong>{{ total|number_format(2, ',', ' ') }} €</strong></td></tr>
+        </tfoot>
+    </table>
+    <div class="d-flex justify-content-between">
+        <a href="{{ path('app_produits') }}" class="btn btn-secondary">Continuer</a>
+        <a href="{{ path('app_cart_clear') }}" class="btn btn-warning">Vider</a>
+        <a href="{{ path('app_commande_valider') }}" class="btn btn-success">Valider</a>
+    </div>
+{% else %}
+    <div class="text-center py-5">
+        <p>Votre panier est vide</p>
+        <a href="{{ path('app_produits') }}" class="btn btn-primary">Voir nos produits</a>
+    </div>
+{% endif %}
+{% endblock %}

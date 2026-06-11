@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - WatchShop{% endblock %}
+
+{% block body %}
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="display-3 fw-bold">L'Élégance à portée de main</h1>
+            <p class="lead mb-4">Découvrez notre collection exclusive de montres de luxe</p>
+            <div class="search-bar">
+                <form action="{{ path('app_produits') }}" method="get" class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Rechercher une montre...">
+                    <button class="btn btn-secondary-custom" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <div class="row">
+        <aside class="col-md-3 mb-4">
+            <div class="filter-sidebar">
+                <h4 class="filter-title"><i class="fas fa-filter"></i> Filtres</h4>
+                <form action="{{ path('app_produits') }}" method="get" id="filterForm">
+                    <div class="filter-group">
+                        <label><i class="fas fa-search"></i> Prix min</label>
+                        <input type="number" name="prix_min" class="form-control" placeholder="Prix minimum">
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-search"></i> Prix max</label>
+                        <input type="number" name="prix_max" class="form-control" placeholder="Prix maximum">
+                    </div>
+                    <div class="filter-group">
+                        <label><i class="fas fa-sort"></i> Trier par</label>
+                        <select name="tri" class="form-select">
+                            <option value="">-- Choisir --</option>
+                            <option value="prix_asc">Prix croissant</option>
+                            <option value="prix_desc">Prix décroissant</option>
+                            <option value="nom_asc">Nom A-Z</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary-custom w-100">Appliquer</button>
+                </form>
+            </div>
+        </aside>
+
+        <div class="col-md-9">
+            <h2 class="mb-4">Nouveautés</h2>
+            <div class="products-grid row">
+                {% for produit in produits %}
+                    <div class="col-md-6 col-lg-4 fade-in">
+                        <div class="product-card" style="animation-delay: {{ loop.index * 0.1 }}s">
+                            <div class="product-image position-relative">
+                                <div class="product-badge">Nouveau</div>
+                                <img src="https://placehold.co/400x400/1a1a2e/white?text=Watch" alt="{{ produit.nom }}" class="product-img">
+                                <div class="product-actions">
+                                    <a href="{{ path('app_cart_add', {'id': produit.id}) }}" class="btn btn-secondary-custom w-100">Ajouter au panier</a>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <h5 class="product-title">{{ produit.nom }}</h5>
+                                <div class="product-price">{{ produit.prix|number_format(2, ',', ' ') }} €</div>
+                                <a href="{{ path('app_produit_detail', {'id': produit.id}) }}" class="btn btn-custom w-100 mt-2">Voir détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">Aucun produit disponible</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

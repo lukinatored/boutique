@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos montres - WatchShop{% endblock %}
+
+{% block body %}
+<h1 class="text-center mb-4">Nos montres</h1>
+<div class="row">
+    {% for produit in produits %}
+        <div class="col-md-3 mb-4">
+            <div class="card product-card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ produit.nom }}</h5>
+                    <p class="card-text">{{ produit.description|slice(0, 80) }}...</p>
+                    <p class="price">{{ produit.prix|number_format(2, ',', ' ') }} €</p>
+                    <a href="{{ path('app_produit_detail', {'id': produit.id}) }}" class="btn btn-primary w-100">Voir détails</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Service\FideliteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,13 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
+    private FideliteService $fideliteService;
+
+    public function __construct(FideliteService $fideliteService)
+    {
+        $this->fideliteService = $fideliteService;
+    }
+
     #[Route('/', name: 'app_account')]
     public function index(): Response
     {
@@ -80,5 +88,22 @@ class AccountController extends AbstractController
         }
         
         return $this->render('account/change_password.html.twig');
+    }
+
+    #[Route('/fidelite', name: 'app_account_fidelite')]
+    public function fidelite(EntityManagerInterface $em): Response
+    {
+        /** @var Client $user */
+        $user = $this->getUser();
+        $avantages = $this->fideliteService->getAvantagesNiveau($user->getNiveau());
+        $progression = $this->fideliteService->getProgression($user);
+        $codesPromo = $this->fideliteService->getCodesPromoClient($user);
+        
+        return $this->render('account/fidelite.html.twig', [
+            'user' => $user,
+            'avantages' => $avantages,
+            'progression' => $progression,
+            'codes_promo' => $codesPromo
+        ]);
     }
 }

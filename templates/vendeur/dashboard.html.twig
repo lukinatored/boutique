@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord vendeur - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4"><i class="fas fa-store text-primary"></i> Mon espace vendeur</h1>
+
+    <!-- Statistiques -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h3>{{ nbMontres }}</h3>
+                    <p>Mes montres</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h3>{{ totalVendus }}</h3>
+                    <p>Vendues</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-dark">
+                <div class="card-body">
+                    <h3>{{ totalStock }}</h3>
+                    <p>En stock</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-info text-white">
+                <div class="card-body">
+                    <h3>{{ totalVues }}</h3>
+                    <p>Vues</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mes montres -->
+    <div class="card">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-clock"></i> Mes créations</h5>
+            <a href="{{ path('app_montre_perso_creer') }}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> Créer
+            </a>
+        </div>
+        <div class="card-body">
+            {% if montres|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Montre</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                                <th>Vendus</th>
+                                <th>Vues</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for montre in montres %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if montre.image %}
+                                                <img src="/uploads/montres_perso/{{ montre.image }}" alt="{{ montre.nom }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 5px; margin-right: 10px;">
+                                            {% else %}
+                                                <i class="fas fa-clock fa-2x me-2" style="color: #c9a84c;"></i>
+                                            {% endif %}
+                                            {{ montre.nom }}
+                                        </div>
+                                    </td>
+                                    <td>{{ montre.prix|number_format(2, ',', ' ') }} €</td>
+                                    <td>{{ montre.stock }}</td>
+                                    <td>{{ montre.vendus }}</td>
+                                    <td>{{ montre.nbVues }}</td>
+                                    <td>
+                                        {% if montre.estPubliee %}
+                                            <span class="badge bg-success">Publiée</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">En attente</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{{ path('app_montre_perso_detail', {'id': montre.id}) }}" class="btn btn-primary">Voir</a>
+                                            {% if not montre.estPubliee %}
+                                                <a href="{{ path('app_montre_perso_publier', {'id': montre.id}) }}" class="btn btn-success">Publier</a>
+                                            {% endif %}
+                                            <a href="{{ path('app_montre_perso_supprimer', {'id': montre.id}) }}" class="btn btn-danger" onclick="return confirm('Supprimer ?')">X</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-store fa-3x text-muted mb-3"></i>
+                    <p>Vous n'avez pas encore créé de montres</p>
+                    <a href="{{ path('app_montre_perso_creer') }}" class="btn btn-primary">Créer ma première montre</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

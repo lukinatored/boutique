@@ -2,23 +2,621 @@
 
 {% block title %}{{ produit.nom }} - WatchShop{% endblock %}
 
+{% block stylesheets %}
+<style>
+    :root {
+        --gold: #c9a84c;
+        --red: #cc0c39;
+        --green: #067d62;
+    }
+
+    .product-page { background: #fff; padding: 20px 0 40px; }
+
+    .breadcrumb-custom {
+        font-size: 0.85rem;
+        color: #888;
+        margin-bottom: 20px;
+        padding: 8px 0;
+    }
+    .breadcrumb-custom a { color: #0066c0; text-decoration: none; }
+    .breadcrumb-custom a:hover { text-decoration: underline; }
+    .breadcrumb-custom .sep { margin: 0 6px; color: #ccc; }
+
+    .gallery-wrapper {
+        position: relative;
+        background: #f8f8f8;
+        border-radius: 20px;
+        border: 1px solid #eee;
+        overflow: hidden;
+        margin-bottom: 15px;
+        cursor: crosshair;
+        width: 100%;
+        height: 500px;
+    }
+    .gallery-wrapper .main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+        user-select: none;
+        display: block;
+    }
+
+.zoom-lens {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border: 3px solid #c9a84c;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(2px);
+    pointer-events: none;
+    display: none;
+    z-index: 10;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(201,168,76,0.25);
+    border-radius: 8px; /* carré légèrement arrondi */
+}
+
+.zoom-lens img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
+
+    .gallery-thumbnails {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .gallery-thumbnails .thumb {
+        width: 75px;
+        height: 75px;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.2s ease;
+        background: #f5f3ed;
+        flex-shrink: 0;
+    }
+    .gallery-thumbnails .thumb:hover { border-color: var(--gold); transform: scale(1.05); }
+    .gallery-thumbnails .thumb.active { border-color: var(--gold); box-shadow: 0 0 20px rgba(201,168,76,0.3); }
+    .gallery-thumbnails .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.9);
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+        transition: all 0.2s;
+        font-size: 1.4rem;
+        color: #333;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+    }
+    .gallery-nav:hover { background: var(--gold); color: white; opacity: 1; }
+    .gallery-nav.prev { left: 15px; }
+    .gallery-nav.next { right: 15px; }
+    .gallery-nav.hidden { display: none; }
+
+    .zoom-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.92);
+        backdrop-filter: blur(20px);
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+    }
+    .zoom-overlay img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 0 50px rgba(0,0,0,0.3);
+    }
+
+    .product-title { font-size: 2.2rem; font-weight: 700; color: #0f1111; margin-bottom: 6px; }
+    .product-subtitle { color: #888; font-size: 0.95rem; margin-bottom: 12px; }
+    .product-price-block {
+        background: #f7f7f7;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin: 12px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .product-price-block .current { font-size: 2.2rem; font-weight: 700; color: var(--red); }
+    .product-price-block .old { font-size: 1rem; color: #555; text-decoration: line-through; }
+    .product-price-block .promo { background: var(--red); color: #fff; padding: 2px 12px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+    .product-stock { display: flex; align-items: center; gap: 6px; font-size: 0.95rem; margin-bottom: 10px; }
+    .product-stock .in { color: var(--green); font-weight: 500; }
+    .product-stock .out { color: var(--red); font-weight: 500; }
+
+    .product-desc { border-top: 1px solid #eee; padding-top: 14px; margin: 14px 0; }
+    .product-desc h6 { font-weight: 600; color: #0f1111; font-size: 0.95rem; margin-bottom: 4px; }
+    .product-desc p { color: #333; line-height: 1.7; font-size: 0.9rem; }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4px 20px;
+        padding: 14px 16px;
+        background: #fafafa;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        margin: 14px 0;
+    }
+    .specs-grid .item {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    .specs-grid .item:last-child { border-bottom: none; }
+    .specs-grid .item .label { color: #888; font-size: 0.85rem; }
+    .specs-grid .item .value { font-weight: 500; color: #0f1111; font-size: 0.85rem; }
+
+    .product-actions { display: flex; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+    .btn-cart {
+        flex: 1;
+        background: #ffd814;
+        border: none;
+        border-radius: 24px;
+        padding: 14px 28px;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #0f1111;
+        text-align: center;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: background 0.2s;
+    }
+    .btn-cart:hover { background: #f7ca00; color: #0f1111; }
+    .btn-cart.disabled { background: #e7e7e7; color: #888; cursor: not-allowed; }
+    .btn-wishlist {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: 1px solid #ddd;
+        background: #fff;
+        color: #555;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+        transition: all 0.2s;
+    }
+    .btn-wishlist:hover { border-color: var(--red); color: var(--red); background: #fff5f5; }
+    .btn-back { color: #0066c0; text-decoration: none; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-back:hover { text-decoration: underline; }
+
+    .detail-desc { background: white; padding: 25px; border-radius: 16px; border: 1px solid #eee; line-height: 1.8; color: #333; }
+
+    .avis-card {
+        background: white;
+        border-radius: 12px;
+        padding: 16px 20px;
+        border: 1px solid #eee;
+        margin-bottom: 12px;
+    }
+    .avis-card .avis-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .avis-card .avis-stars { color: #f90; font-size: 0.9rem; }
+    .avis-card .avis-user { font-weight: 600; color: #0f1111; }
+    .avis-card .avis-date { font-size: 0.8rem; color: #999; }
+    .avis-card .avis-commentaire { color: #333; line-height: 1.6; font-size: 0.95rem; }
+    .rating-summary {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 15px 20px;
+        background: #fafafa;
+        border-radius: 12px;
+        border: 1px solid #eee;
+        margin: 15px 0;
+    }
+    .rating-summary .big-star { font-size: 2.5rem; font-weight: 700; color: var(--red); }
+    .rating-summary .big-star small { font-size: 1rem; font-weight: 400; color: #888; }
+    .rating-summary .stars-big { color: #f90; font-size: 1.4rem; }
+    .rating-input i { cursor: pointer; transition: color 0.2s; }
+    .rating-input i:hover { transform: scale(1.2); }
+
+    @media (max-width: 992px) {
+        .gallery-wrapper { height: 400px; }
+        .zoom-lens { width: 200px; height: 200px; }
+        .zoom-lens .lens-image { width: 400px; height: 400px; }
+    }
+    @media (max-width: 768px) {
+        .gallery-wrapper { height: 300px; }
+        .zoom-lens { width: 150px; height: 150px; }
+        .zoom-lens .lens-image { width: 300px; height: 300px; }
+        .specs-grid { grid-template-columns: 1fr; }
+        .product-actions { flex-direction: column; }
+        .btn-wishlist { width: 100%; border-radius: 24px; height: 48px; }
+        .rating-summary { flex-direction: column; text-align: center; }
+        .product-title { font-size: 1.4rem; }
+        .product-price-block .current { font-size: 1.5rem; }
+        .gallery-nav { width: 36px; height: 36px; font-size: 1rem; }
+    }
+</style>
+{% endblock %}
+
 {% block body %}
-<div class="row">
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-body text-center">
-                <i class="fas fa-clock fa-5x text-secondary"></i>
-                <p class="text-muted mt-2">Image de la montre</p>
+<div class="product-page">
+    <div class="container">
+        <div class="breadcrumb-custom">
+            <a href="{{ path('app_home') }}">Accueil</a>
+            <span class="sep">›</span>
+            <a href="{{ path('app_produits') }}">Collection</a>
+            <span class="sep">›</span>
+            <span>{{ produit.nom }}</span>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="gallery-wrapper" id="galleryContainer">
+                    <button class="gallery-nav prev hidden" id="prevBtn">‹</button>
+                    <img src="/uploads/produits/{{ produit.galerie[0] ?? produit.image ?? 'default.jpg' }}"
+                         alt="{{ produit.nom }}"
+                         class="main-image"
+                         id="mainImage"
+                         onclick="toggleZoomOverlay()"
+                         loading="lazy">
+                    <button class="gallery-nav next hidden" id="nextBtn">›</button>
+                    
+                    <div class="zoom-lens" id="zoomLens">
+                        <img src="" alt="Zoom" class="lens-image" id="lensImage">
+                    </div>
+                </div>
+
+                <div class="gallery-thumbnails" id="thumbnails">
+                    {% set images = produit.galerie ?? [produit.image ?? 'default.jpg'] %}
+                    {% for img in images %}
+                        {% if img is not empty %}
+                            <div class="thumb {% if loop.first %}active{% endif %}"
+                                 onclick="changeImage(this, '/uploads/produits/{{ img }}')">
+                                <img src="/uploads/produits/{{ img }}" alt="Vue {{ loop.index }}" loading="lazy">
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h1 class="product-title">{{ produit.nom }}</h1>
+                <div class="product-subtitle">Montre de luxe</div>
+
+                <div class="product-price-block">
+                    <span class="current">{{ produit.prix|number_format(2, ',', ' ') }} €</span>
+                    {% if produit.prixPromo %}
+                        <span class="old">{{ produit.prixPromo|number_format(2, ',', ' ') }} €</span>
+                        <span class="promo">Promotion</span>
+                    {% endif %}
+                </div>
+
+                <div class="product-stock">
+                    {% if produit.stock > 0 %}
+                        <i class="fas fa-circle" style="color:var(--green);font-size:0.5rem;"></i>
+                        <span class="in">En stock ({{ produit.stock }} disponibles)</span>
+                    {% else %}
+                        <i class="fas fa-circle" style="color:var(--red);font-size:0.5rem;"></i>
+                        <span class="out">Rupture de stock</span>
+                    {% endif %}
+                </div>
+
+                <div class="product-desc">
+                    <h6>Description</h6>
+                    <p>{{ produit.description }}</p>
+                </div>
+
+                <div class="specs-grid">
+                    {% if produit.mouvement %}<div class="item"><span class="label">Mouvement</span><span class="value">{{ produit.mouvement }}</span></div>{% endif %}
+                    {% if produit.boitier %}<div class="item"><span class="label">Boîtier</span><span class="value">{{ produit.boitier }}</span></div>{% endif %}
+                    {% if produit.bracelet %}<div class="item"><span class="label">Bracelet</span><span class="value">{{ produit.bracelet }}</span></div>{% endif %}
+                    {% if produit.eauResistance %}<div class="item"><span class="label">Étanchéité</span><span class="value">{{ produit.eauResistance }} m</span></div>{% endif %}
+                    {% if produit.diametre %}<div class="item"><span class="label">Diamètre</span><span class="value">{{ produit.diametre }}</span></div>{% endif %}
+                    {% if produit.epaisseur %}<div class="item"><span class="label">Épaisseur</span><span class="value">{{ produit.epaisseur }}</span></div>{% endif %}
+                </div>
+
+                <div class="product-actions">
+                    {% if produit.stock > 0 %}
+                        <a href="{{ path('app_cart_add', {'id': produit.id}) }}" class="btn-cart">
+                            <i class="fas fa-shopping-bag"></i> Ajouter au panier
+                        </a>
+                    {% else %}
+                        <span class="btn-cart disabled"><i class="fas fa-times"></i> Indisponible</span>
+                    {% endif %}
+                    <a href="{{ path('app_wishlist_add', {'id': produit.id}) }}" class="btn-wishlist">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                </div>
+
+                <div>
+                    <a href="{{ path('app_produits') }}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Retour à la collection
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-6">
-        <h1>{{ produit.nom }}</h1>
-        <p class="price display-6">{{ produit.prix|number_format(2, ',', ' ') }} €</p>
-        <p class="text-muted">Stock: {{ produit.stock }}</p>
-        <p>{{ produit.description }}</p>
-        <a href="{{ path('app_cart_add', {'id': produit.id}) }}" class="btn btn-success btn-lg w-100">Ajouter au panier</a>
-        <a href="{{ path('app_produits') }}" class="btn btn-secondary w-100 mt-2">Retour</a>
+
+        {% if produit.descriptionDetaillee %}
+        <div class="mt-5 pt-4 border-top">
+            <h3 style="font-weight:600;color:#0f1111;margin-bottom:15px;">📖 Description détaillée</h3>
+            <div class="detail-desc">
+                {{ produit.descriptionDetaillee|nl2br }}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mt-5 pt-4 border-top">
+            <h3 style="font-weight:600;color:#0f1111;margin-bottom:15px;">⭐ Avis clients</h3>
+
+            <div class="rating-summary">
+                <div>
+                    <span class="big-star">{{ produit.moyenneNotes|number_format(1, ',', ' ') }} <small>/ 5</small></span>
+                </div>
+                <div>
+                    <div class="stars-big">
+                        {% for i in 1..5 %}
+                            {% if i <= produit.moyenneNotes|round(0, 'floor') %}
+                                <i class="fas fa-star"></i>
+                            {% elseif i - 0.5 <= produit.moyenneNotes %}
+                                <i class="fas fa-star-half-alt"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span style="color:#888;font-size:0.9rem;">{{ produit.nbAvis }} avis</span>
+                </div>
+            </div>
+
+            {% if app.user %}
+                <div style="background:#fafafa;padding:20px;border-radius:12px;border:1px solid #eee;margin-bottom:20px;">
+                    <h5 style="font-weight:600;margin-bottom:12px;">Donnez votre avis</h5>
+                    <form method="post" action="{{ path('app_avis_ajouter', {'id': produit.id}) }}">
+                        <div style="display:flex;gap:20px;align-items:center;margin-bottom:12px;">
+                            <label style="font-weight:500;">Note :</label>
+                            <div class="rating-input" style="display:flex;gap:5px;font-size:1.8rem;color:#ddd;cursor:pointer;" id="ratingStars">
+                                <i class="far fa-star" data-value="1" onclick="setRating(1)"></i>
+                                <i class="far fa-star" data-value="2" onclick="setRating(2)"></i>
+                                <i class="far fa-star" data-value="3" onclick="setRating(3)"></i>
+                                <i class="far fa-star" data-value="4" onclick="setRating(4)"></i>
+                                <i class="far fa-star" data-value="5" onclick="setRating(5)"></i>
+                            </div>
+                            <input type="hidden" name="note" id="noteInput" value="5">
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <textarea name="commentaire" class="form-control" rows="3" placeholder="Partagez votre expérience..." required></textarea>
+                        </div>
+                        <button type="submit" style="background:#c9a84c;color:white;border:none;padding:8px 30px;border-radius:25px;font-weight:600;cursor:pointer;transition:background 0.3s;">
+                            Publier l'avis
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div style="background:#f0f7ff;padding:15px 20px;border-radius:12px;border:1px solid #d0e4f5;margin-bottom:20px;">
+                    <a href="{{ path('app_login') }}" style="color:#0066c0;font-weight:600;">Connectez-vous</a> pour laisser un avis
+                </div>
+            {% endif %}
+
+            {% if produit.avisList|length > 0 %}
+                {% for avis in produit.avisList %}
+                    <div class="avis-card">
+                        <div class="avis-header">
+                            <div>
+                                <span class="avis-user">{{ avis.client.prenom }} {{ avis.client.nom|slice(0,1) }}.</span>
+                                <span class="avis-stars">
+                                    {% for i in 1..avis.note %}<i class="fas fa-star"></i>{% endfor %}
+                                    {% for i in avis.note+1..5 %}<i class="far fa-star"></i>{% endfor %}
+                                </span>
+                            </div>
+                            <span class="avis-date">{{ avis.createdAt|date('d/m/Y') }}</span>
+                        </div>
+                        <div class="avis-commentaire">{{ avis.commentaire }}</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p style="color:#888;text-align:center;padding:20px;">Aucun avis pour le moment. Soyez le premier !</p>
+            {% endif %}
+        </div>
     </div>
 </div>
+
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoomOverlay()">
+    <img src="" alt="Zoom" id="zoomImage">
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+const container = document.getElementById('galleryContainer');
+const mainImage = document.getElementById('mainImage');
+const zoomLens = document.getElementById('zoomLens');
+const lensImage = document.getElementById('lensImage');
+const navButtons = document.querySelectorAll('.gallery-nav');
+
+const ZOOM = 2.5;
+let active = false;
+
+// ===== ZOOM =====
+container.addEventListener('mouseenter', (e) => {
+    if (e.target.closest('.gallery-nav')) return;
+    active = true;
+    zoomLens.style.display = 'block';
+    lensImage.src = mainImage.src;
+});
+
+container.addEventListener('mouseleave', (e) => {
+    if (e.relatedTarget && e.relatedTarget.closest('.gallery-nav')) return;
+    active = false;
+    zoomLens.style.display = 'none';
+});
+
+// Désactiver le zoom sur les flèches
+navButtons.forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+        active = false;
+        zoomLens.style.display = 'none';
+    });
+});
+
+container.addEventListener('mousemove', (e) => {
+    if (!active) return;
+    if (e.target.closest('.gallery-nav')) return;
+
+    const rect = container.getBoundingClientRect();
+    const lensSize = zoomLens.offsetWidth;
+    const half = lensSize / 2;
+
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+
+    let lensX = Math.max(0, Math.min(x - half, rect.width - lensSize));
+    let lensY = Math.max(0, Math.min(y - half, rect.height - lensSize));
+
+    zoomLens.style.left = lensX + 'px';
+    zoomLens.style.top = lensY + 'px';
+
+    const cx = lensX + half;
+    const cy = lensY + half;
+    const rx = cx / rect.width;
+    const ry = cy / rect.height;
+
+    const zoomW = rect.width * ZOOM;
+    const zoomH = rect.height * ZOOM;
+
+    lensImage.style.width = zoomW + 'px';
+    lensImage.style.height = zoomH + 'px';
+    lensImage.style.left = -(rx * zoomW - half) + 'px';
+    lensImage.style.top = -(ry * zoomH - half) + 'px';
+});
+
+// ===== NAVIGATION =====
+const images = [
+    {% for img in produit.galerie ?? [produit.image ?? 'default.jpg'] %}
+        '{{ img }}',
+    {% endfor %}
+].filter(Boolean);
+
+let currentIndex = 0;
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const thumbnails = document.querySelectorAll('.thumb');
+
+function updateNavigation() {
+    if (images.length <= 1) {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        return;
+    }
+    prevBtn.classList.toggle('hidden', currentIndex === 0);
+    nextBtn.classList.toggle('hidden', currentIndex === images.length - 1);
+}
+
+function goToImage(index) {
+    if (index < 0) index = images.length - 1;
+    if (index >= images.length) index = 0;
+    currentIndex = index;
+    
+    const imgPath = '/uploads/produits/' + images[index];
+    mainImage.src = imgPath;
+    lensImage.src = imgPath;
+    
+    thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+    });
+    updateNavigation();
+    
+    // ===== FORCER LA RÉACTIVATION DU ZOOM =====
+    setTimeout(() => {
+        const rect = container.getBoundingClientRect();
+        // Utiliser un event fictif si on a un event stocké
+        const lastEvent = window._lastMouseEvent;
+        if (lastEvent) {
+            const mx = lastEvent.clientX;
+            const my = lastEvent.clientY;
+            if (mx >= rect.left && mx <= rect.right &&
+                my >= rect.top && my <= rect.bottom) {
+                active = true;
+                zoomLens.style.display = 'block';
+                lensImage.src = mainImage.src;
+            }
+        }
+    }, 50);
+}
+
+// Stocker le dernier événement souris
+document.addEventListener('mousemove', (e) => {
+    window._lastMouseEvent = e;
+});
+
+// Événements
+prevBtn.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    window._lastMouseEvent = e; 
+    goToImage(currentIndex - 1); 
+});
+
+nextBtn.addEventListener('click', (e) => { 
+    e.stopPropagation(); 
+    window._lastMouseEvent = e; 
+    goToImage(currentIndex + 1); 
+});
+
+thumbnails.forEach((thumb, index) => {
+    thumb.addEventListener('click', (e) => {
+        window._lastMouseEvent = e;
+        goToImage(index);
+    });
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goToImage(currentIndex - 1); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); goToImage(currentIndex + 1); }
+});
+
+// Initialisation
+updateNavigation();
+
+// ===== ZOOM OVERLAY =====
+function toggleZoomOverlay() {
+    const overlay = document.getElementById('zoomOverlay');
+    const zoomImg = document.getElementById('zoomImage');
+    if (overlay.style.display === 'flex') {
+        overlay.style.display = 'none';
+    } else {
+        zoomImg.src = mainImage.src;
+        overlay.style.display = 'flex';
+    }
+}
+
+function closeZoomOverlay() {
+    document.getElementById('zoomOverlay').style.display = 'none';
+}
+</script>
 {% endblock %}

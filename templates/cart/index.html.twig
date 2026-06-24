@@ -3,37 +3,67 @@
 {% block title %}Mon panier - WatchShop{% endblock %}
 
 {% block body %}
-<h1 class="text-center mb-4">Mon panier</h1>
-
-{% if items|length > 0 %}
-    <table class="table table-bordered">
-        <thead class="table-dark">
-            <tr><th>Produit</th><th>Prix</th><th>Quantité</th><th>Total</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-            {% for item in items %}
-                <tr>
-                    <td>{{ item.produit.nom }}</td>
-                    <td>{{ item.produit.prix|number_format(2, ',', ' ') }} €</td>
-                    <td>{{ item.quantite }}</td>
-                    <td>{{ (item.produit.prix * item.quantite)|number_format(2, ',', ' ') }} €</td>
-                    <td><a href="{{ path('app_cart_remove', {'id': item.produit.id}) }}" class="btn btn-danger btn-sm">Supprimer</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr class="table-dark"><td colspan="3" class="text-end"><strong>Total :</strong></td><td colspan="2"><strong>{{ total|number_format(2, ',', ' ') }} €</strong></td></tr>
-        </tfoot>
-    </table>
-    <div class="d-flex justify-content-between">
-        <a href="{{ path('app_produits') }}" class="btn btn-secondary">Continuer</a>
-        <a href="{{ path('app_cart_clear') }}" class="btn btn-warning">Vider</a>
-        <a href="{{ path('app_commande_valider') }}" class="btn btn-success">Valider</a>
-    </div>
-{% else %}
-    <div class="text-center py-5">
-        <p>Votre panier est vide</p>
-        <a href="{{ path('app_produits') }}" class="btn btn-primary">Voir nos produits</a>
-    </div>
-{% endif %}
+<div class="container py-4">
+    <h1 class="text-center mb-4 fade-in-up">Mon panier</h1>
+    
+    {% if items|length > 0 %}
+        <div class="table-responsive fade-in-up">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.produit.nom }}</td>
+                            <td>{{ item.produit.prix|number_format(2, ',', ' ') }} €</td>
+                            <td>{{ item.quantite }}</td>
+                            <td>{{ (item.produit.prix * item.quantite)|number_format(2, ',', ' ') }} €</td>
+                            <td>
+                                <a href="{{ path('app_cart_remove', {'id': item.produit.id}) }}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i> Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="table-dark">
+                        <td colspan="3" class="text-end"><strong>Total :</strong></td>
+                        <td colspan="2"><strong>{{ total|number_format(2, ',', ' ') }} €</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div class="d-flex justify-content-between flex-wrap gap-2 fade-in-up">
+            <a href="{{ path('app_produits') }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Continuer mes achats
+            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ path('app_cart_clear') }}" class="btn btn-warning" onclick="return confirm('Vider le panier ?')">
+                    <i class="fas fa-trash"></i> Vider
+                </a>
+                <a href="{{ path('app_paiement_choisir') }}" class="btn btn-success">
+                    <i class="fas fa-credit-card"></i> Payer par carte
+                </a>
+                <a href="{{ path('app_paiement_livraison_form') }}" class="btn btn-info">
+                    <i class="fas fa-truck"></i> Payer à la livraison
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div class="text-center py-5 fade-in-up">
+            <i class="fas fa-shopping-cart fa-4x text-muted mb-3"></i>
+            <p class="lead">Votre panier est vide</p>
+            <a href="{{ path('app_produits') }}" class="btn btn-custom">Découvrir nos produits</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

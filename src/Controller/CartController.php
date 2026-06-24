@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Repository\ProduitsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -75,11 +76,10 @@ class CartController extends AbstractController
     }
 
     #[Route('/count', name: 'app_cart_count')]
-    public function count(SessionInterface $session): Response
+    public function count(SessionInterface $session): JsonResponse
     {
         $panier = $session->get('panier', []);
         $count = array_sum($panier);
-        
         return $this->json(['count' => $count]);
     }
 }

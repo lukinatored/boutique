@@ -1,0 +1,165 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi de commande #{{ commande.id }} - WatchShop{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .timeline {
+        position: relative;
+        padding: 20px 0;
+    }
+    .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 30px;
+        position: relative;
+        padding-left: 60px;
+    }
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 30px;
+        bottom: -30px;
+        width: 3px;
+        background: #dee2e6;
+    }
+    .timeline-item:last-child::before {
+        display: none;
+    }
+    .timeline-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f8f9fa;
+        border: 3px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        z-index: 1;
+    }
+    .timeline-item.active .timeline-icon {
+        border-color: #28a745;
+        background: #28a745;
+        color: white;
+    }
+    .timeline-item.current .timeline-icon {
+        border-color: #ffc107;
+        background: #ffc107;
+        color: white;
+        animation: pulse 1.5s infinite;
+    }
+    .timeline-content {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        flex: 1;
+    }
+    .timeline-content .date {
+        font-size: 0.85rem;
+        color: #6c757d;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    .status-badge {
+        padding: 8px 20px;
+        border-radius: 25px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    .card-suivi {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card card-suivi">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="mb-0">
+                            <i class="fas fa-box text-primary"></i>
+                            Commande #{{ commande.id }}
+                        </h2>
+                        <span class="status-badge 
+                            {% if commande.statut == 'en_attente' %}bg-warning text-dark
+                            {% elseif commande.statut == 'expediee' %}bg-info text-white
+                            {% elseif commande.statut == 'en_livraison' %}bg-primary text-white
+                            {% elseif commande.statut == 'livree' %}bg-success text-white
+                            {% else %}bg-secondary text-white{% endif %}">
+                            {{ commande.statut|capitalize }}
+                        </span>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p><strong>📅 Date :</strong> {{ commande.createdAt|date('d/m/Y H:i') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>💰 Total :</strong> {{ commande.total|number_format(2, ',', ' ') }} €</p>
+                        </div>
+                    </div>
+
+                    {% if commande.numeroSuivi %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-truck"></i>
+                            <strong>Numéro de suivi :</strong> {{ commande.numeroSuivi }}
+                        </div>
+                    {% endif %}
+
+                    <hr>
+
+                    <h5 class="mb-4"><i class="fas fa-timeline"></i> Suivi de livraison</h5>
+
+                    <div class="timeline">
+                        {% for key, etape in etapes %}
+                            <div class="timeline-item 
+                                {% if etape.active %}active{% endif %}
+                                {% if etape.current %}current{% endif %}
+                            ">
+                                <div class="timeline-icon">
+                                    <i class="fas {{ etape.icon }}"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <strong>{{ etape.label }}</strong>
+                                        {% if etape.date %}
+                                            <span class="date">{{ etape.date|date('d/m/Y H:i') }}</span>
+                                        {% else %}
+                                            <span class="date text-muted">En attente</span>
+                                        {% endif %}
+                                    </div>
+                                    {% if etape.current and commande.commentaireLivraison %}
+                                        <p class="mt-2 mb-0 text-muted small">
+                                            <i class="fas fa-comment"></i> {{ commande.commentaireLivraison }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a href="{{ path('app_account') }}" class="btn btn-custom">
+                            <i class="fas fa-arrow-left"></i> Retour à mon compte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

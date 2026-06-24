@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alertes stock - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4"><i class="fas fa-exclamation-triangle text-warning"></i> Alertes stock</h1>
+
+    <div class="card">
+        <div class="card-body">
+            {% if produits|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Stock</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for produit in produits %}
+                                <tr>
+                                    <td>{{ produit.nom }}</td>
+                                    <td>{{ produit.stock }}</td>
+                                    <td>
+                                        {% if produit.stock == 0 %}
+                                            <span class="badge bg-danger">Rupture</span>
+                                        {% elseif produit.stock <= 2 %}
+                                            <span class="badge bg-warning">Stock très bas</span>
+                                        {% else %}
+                                            <span class="badge bg-info">Stock bas</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-primary">Réapprovisionner</a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-check-circle fa-3x text-success"></i>
+                    <p class="lead mt-3">Tous les produits sont en stock suffisant !</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

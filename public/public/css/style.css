@@ -1,0 +1,235 @@
+:root {
+    --primary: #1a1a2e;
+    --secondary: #e94560;
+    --gold: #c9a84c;
+    --dark: #0f3460;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', sans-serif;
+    padding-top: 76px;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+main {
+    flex: 1 0 auto;
+}
+.footer {
+    flex-shrink: 0;
+    background: var(--primary);
+    color: white;
+    padding: 50px 0 20px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.navbar {
+    background: rgba(26,26,46,0.95) !important;
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #fff, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.nav-link {
+    transition: all 0.3s;
+    font-weight: 500;
+}
+.nav-link:hover {
+    color: var(--gold) !important;
+    transform: translateY(-2px);
+}
+
+.product-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.4s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    height: 100%;
+}
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+.price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+.hero-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+}
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.search-container {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+.search-container .input-group {
+    background: white;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+.search-container input {
+    border: none;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    outline: none;
+    flex: 1;
+    background: transparent;
+}
+.search-container .search-btn {
+    background: var(--gold);
+    border: none;
+    padding: 12px 25px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+.search-container .search-btn:hover {
+    background: #b8942e;
+}
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    z-index: 999;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    margin-top: 5px;
+}
+.search-results .result-item {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.search-results .result-item:hover {
+    background: #f8f9fa;
+}
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+.footer a:hover {
+    color: var(--gold);
+}
+.social-links a {
+    color: white;
+    margin: 0 10px;
+    font-size: 1.2rem;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+.loading-logo {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, #c9a84c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: fadeInDown 0.8s ease;
+}
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255,255,255,0.1);
+    border-top: 4px solid #c9a84c;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-top: 20px;
+}
+.loading-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    margin-top: 30px;
+    overflow: hidden;
+}
+.loading-bar-inner {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #c9a84c, #f0d060);
+    border-radius: 2px;
+    animation: loadBar 1.5s ease forwards;
+}
+.loading-text {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+    margin-top: 15px;
+    letter-spacing: 4px;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+@keyframes loadBar {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        max-width: 100%;
+        margin: 10px 0;
+    }
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    .hero-section {
+        padding: 40px 0;
+    }
+}

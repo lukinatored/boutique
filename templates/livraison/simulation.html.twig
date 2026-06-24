@@ -1,0 +1,248 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Suivi de livraison - WatchShop{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .timeline {
+        position: relative;
+        padding: 30px 0;
+    }
+    .timeline-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        padding-left: 60px;
+        position: relative;
+    }
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 20px;
+        top: 30px;
+        bottom: -25px;
+        width: 3px;
+        background: #dee2e6;
+        transition: background 0.5s;
+    }
+    .timeline-item:last-child::before {
+        display: none;
+    }
+    .timeline-item .icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #e9ecef;
+        border: 3px solid #dee2e6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.5s;
+        z-index: 1;
+    }
+    .timeline-item.active .icon {
+        border-color: #28a745;
+        background: #28a745;
+        color: white;
+    }
+    .timeline-item.current .icon {
+        border-color: #ffc107;
+        background: #ffc107;
+        color: white;
+        animation: pulse 1.5s infinite;
+    }
+    .timeline-item .content {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.06);
+        flex: 1;
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+    }
+    .notification-item {
+        background: white;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin-bottom: 10px;
+        border-left: 4px solid #ddd;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideIn 0.5s ease;
+    }
+    .notification-item .icon {
+        font-size: 1.8rem;
+    }
+    .notification-item .content {
+        flex: 1;
+    }
+    .notification-item .content .message {
+        font-weight: 500;
+        color: #333;
+    }
+    .notification-item .content .time {
+        font-size: 0.8rem;
+        color: #999;
+    }
+    .notification-item.success { border-left-color: #28a745; }
+    .notification-item.warning { border-left-color: #ffc107; }
+    .notification-item.info { border-left-color: #17a2b8; }
+    .notification-item.danger { border-left-color: #dc3545; }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-30px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-truck"></i> Suivi de livraison #{{ commande.id }}</h5>
+                    <span class="badge 
+                        {% if commande.statut == 'en_attente' %}bg-warning text-dark
+                        {% elseif commande.statut == 'expediee' %}bg-info
+                        {% elseif commande.statut == 'en_livraison' %}bg-primary
+                        {% elseif commande.statut == 'livree' %}bg-success
+                        {% else %}bg-secondary{% endif %}">
+                        {{ commande.statut|capitalize }}
+                    </span>
+                </div>
+                <div class="card-body">
+                    {% if commande.numeroSuivi %}
+                        <div class="alert alert-info">
+                            <strong>📦 Numéro de suivi :</strong> {{ commande.numeroSuivi }}
+                        </div>
+                    {% endif %}
+
+                    <!-- Timeline -->
+                    <h6><i class="fas fa-timeline"></i> Progression</h6>
+                    <div class="timeline">
+                        {% for key, etape in etapes %}
+                            <div class="timeline-item 
+                                {% if etape.active %}active{% endif %}
+                                {% if etape.current %}current{% endif %}
+                            ">
+                                <div class="icon">{{ etape.icon }}</div>
+                                <div class="content">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>{{ etape.label }}</strong>
+                                        {% if etape.active %}
+                                            <span class="badge bg-success">✓</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Notifications -->
+                    <hr>
+                    <h6><i class="fas fa-bell"></i> Notifications en temps réel</h6>
+                    <div id="notificationsContainer">
+                        {% for notif in notifications %}
+                            <div class="notification-item {{ notif.type }}">
+                                <div class="icon">{{ notif.icon }}</div>
+                                <div class="content">
+                                    <div class="message">{{ notif.message }}</div>
+                                    <div class="time">{{ notif.time }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Boutons d'action -->
+                    <div class="mt-4">
+                        {% if commande.statut != 'livree' %}
+                            <button onclick="avancerLivraison({{ commande.id }})" class="btn btn-primary">
+                                <i class="fas fa-forward"></i> Simuler prochaine étape
+                            </button>
+                        {% else %}
+                            <div class="alert alert-success">
+                                <i class="fas fa-check-circle"></i> 🎉 Commande livrée avec succès !
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="{{ path('app_account') }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Retour à mon compte
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    function avancerLivraison(id) {
+        const btn = event.target;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mise à jour...';
+
+        fetch('/livraison/avancer/' + id, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Ajouter les nouvelles notifications
+                const container = document.getElementById('notificationsContainer');
+                data.notifications.forEach(notif => {
+                    const div = document.createElement('div');
+                    div.className = 'notification-item ' + notif.type;
+                    div.innerHTML = `
+                        <div class="icon">${notif.icon}</div>
+                        <div class="content">
+                            <div class="message">${notif.message}</div>
+                            <div class="time">${notif.time}</div>
+                        </div>
+                    `;
+                    container.prepend(div);
+                });
+                
+                // Mettre à jour le badge de statut
+                const badge = document.querySelector('.card-header .badge');
+                const statutLabels = {
+                    'en_attente': 'En attente',
+                    'validee': 'Validée',
+                    'expediee': 'Expédiée',
+                    'en_livraison': 'En livraison',
+                    'livree': 'Livrée'
+                };
+                badge.textContent = statutLabels[data.statut] || data.statut;
+                badge.className = 'badge ' + (data.statut === 'livree' ? 'bg-success' : 
+                                              data.statut === 'expediee' ? 'bg-info' : 
+                                              data.statut === 'en_livraison' ? 'bg-primary' : 'bg-warning text-dark');
+                
+                // Recharger après un délai pour mettre à jour la timeline
+                setTimeout(() => location.reload(), 1500);
+            } else {
+                alert(data.error || 'Erreur');
+            }
+        })
+        .catch(err => {
+            alert('Erreur de communication');
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-forward"></i> Simuler prochaine étape';
+        });
+    }
+</script>
+{% endblock %}

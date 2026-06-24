@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="fas fa-check-circle"></i> Récapitulatif de votre commande</h4>
+                </div>
+                <div class="card-body">
+                    <h6>🛒 Produits commandés</h6>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Qté</th>
+                                    <th>Prix unitaire</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in items %}
+                                    <tr>
+                                        <td>{{ item.produit.nom }}</td>
+                                        <td>{{ item.quantite }}</td>
+                                        <td>{{ item.produit.prix|number_format(2, ',', ' ') }} €</td>
+                                        <td>{{ item.sousTotal|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                {% if code_promo %}
+                                    <tr>
+                                        <td colspan="3" class="text-end">Sous-total</td>
+                                        <td>{{ (total + code_promo.reduction)|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end text-success">Réduction ({{ code_promo.code }})</td>
+                                        <td class="text-success">- {{ code_promo.reduction|number_format(2, ',', ' ') }} €</td>
+                                    </tr>
+                                {% endif %}
+                                <tr class="table-dark">
+                                    <td colspan="3" class="text-end"><strong>Total à payer</strong></td>
+                                    <td><strong>{{ total|number_format(2, ',', ' ') }} €</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <h6>📍 Adresse de livraison</h6>
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <p style="white-space:pre-line;">{{ livraison_data.adresse }}</p>
+                            <p><strong>Code postal :</strong> {{ livraison_data.codePostal }}</p>
+                            <p><strong>Ville :</strong> {{ livraison_data.ville }}</p>
+                            <p><strong>Département :</strong> {{ livraison_data.departement }}</p>
+                            <p><strong>Région :</strong> {{ livraison_data.region }}</p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning mt-3">
+                        <i class="fas fa-info-circle"></i> 
+                        Vous paierez <strong>{{ total|number_format(2, ',', ' ') }} €</strong> à la livraison.
+                    </div>
+
+                    <form method="post" action="{{ path('app_paiement_livraison_confirmer') }}">
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="fas fa-check"></i> Confirmer la commande
+                        </button>
+                    </form>
+
+                    <div class="mt-3">
+                        <a href="{{ path('app_paiement_livraison_form') }}" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-arrow-left"></i> Modifier les informations
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

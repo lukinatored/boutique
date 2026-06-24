@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer ma montre - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h3 class="mb-0"><i class="fas fa-crown"></i> Créer ma montre personnalisée</h3>
+                </div>
+                <div class="card-body">
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Nom de la montre *</label>
+                            <input type="text" name="nom" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea name="description" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Boîtier *</label>
+                                <select name="boitier" class="form-select" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="Acier">Acier</option>
+                                    <option value="Or">Or</option>
+                                    <option value="Titane">Titane</option>
+                                    <option value="Céramique">Céramique</option>
+                                    <option value="Carbone">Carbone</option>
+                                    <option value="Platine">Platine</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Bracelet *</label>
+                                <select name="bracelet" class="form-select" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="Cuir">Cuir</option>
+                                    <option value="Acier">Acier</option>
+                                    <option value="Caoutchouc">Caoutchouc</option>
+                                    <option value="Nato">Nato</option>
+                                    <option value="Or">Or</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Mouvement *</label>
+                                <select name="mouvement" class="form-select" required>
+                                    <option value="">Choisir...</option>
+                                    <option value="Automatique">Automatique</option>
+                                    <option value="Quartz">Quartz</option>
+                                    <option value="Mécanique">Mécanique</option>
+                                    <option value="Solar">Solar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Prix (€) *</label>
+                            <input type="number" name="prix" class="form-control" step="0.01" min="0" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Source / Référence</label>
+                            <input type="text" name="source" class="form-control" placeholder="Lien ou référence de la montre">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Image de la montre</label>
+                            <input type="file" name="image" class="form-control" accept="image/*">
+                            <small class="text-muted">Format: JPG, PNG, WebP (max 5MB)</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-check"></i> Créer ma montre
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

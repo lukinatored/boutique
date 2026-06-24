@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Repository\ProduitsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(ProduitsRepository $produitsRepository): Response
     {
-        $produits = $produitsRepository->findBy([], ['id' => 'DESC'], 8);
+        $produits = $produitsRepository->findLatest(8);
         return $this->render('main/index.html.twig', [
             'produits' => $produits,
         ]);
@@ -26,35 +27,29 @@ class MainController extends AbstractController
         $prixMax = $request->query->get('prix_max');
         $tri = $request->query->get('tri');
 
-        $qb = $produitsRepository->createQueryBuilder('p');
+        $filters = [];
 
-        if ($search) {
-            $qb->andWhere('p.nom LIKE :search OR p.description LIKE :search')
-               ->setParameter('search', '%' . $search . '%');
+        if ($search && $search !== '') {
+            $filters['search'] = $search;
         }
 
-        if ($prixMin) {
-            $qb->andWhere('p.prix >= :prixMin')->setParameter('prixMin', $prixMin);
+        if ($prixMin && $prixMin !== '') {
+            $filters['prix_min'] = (float)$prixMin;
         }
 
-        if ($prixMax) {
-            $qb->andWhere('p.prix <= :prixMax')->setParameter('prixMax', $prixMax);
+        if ($prixMax && $prixMax !== '') {
+            $filters['prix_max'] = (float)$prixMax;
         }
 
-        if ($tri === 'prix_asc') {
-            $qb->orderBy('p.prix', 'ASC');
-        } elseif ($tri === 'prix_desc') {
-            $qb->orderBy('p.prix', 'DESC');
-        } elseif ($tri === 'nom_asc') {
-            $qb->orderBy('p.nom', 'ASC');
-        } else {
-            $qb->orderBy('p.id', 'DESC');
+        if ($tri && $tri !== '') {
+            $filters['tri'] = $tri;
         }
 
-        $produits = $qb->getQuery()->getResult();
+        $produits = $produitsRepository->searchWithFilters($filters);
 
         return $this->render('main/produits.html.twig', [
             'produits' => $produits,
+            'filters' => $filters,
         ]);
     }
 
@@ -67,6 +62,53 @@ class MainController extends AbstractController
         }
         return $this->render('main/produit_detail.html.twig', [
             'produit' => $produit,
+        ]);
+    }
+
+    #[Route('/api/search', name: 'app_api_search')]
+    public function apiSearch(Request $request, ProduitsRepository $produitsRepository): JsonResponse
+    {
+        $term = $request->query->get('q', '');
+        
+        if (strlen($term) < 2) {
+            return $this->json(['results' => []]);
+        }
+
+        $results = $produitsRepository->searchAutocomplete($term);
+        
+        $data = [];
+        foreach ($results as $result) {
+            $data[] = [
+                'id' => $result['id'],
+                'nom' => $result['nom'],
+                'prix' => $result['prix'],
+                'stock' => $result['stock'],
+                'url' => $this->generateUrl('app_produit_detail', ['id' => $result['id']]),
+            ];
+        }
+
+        return $this->json(['results' => $data]);
+    }
+
+    #[Route('/recommandations', name: 'app_recommandations')]
+    public function recommandations(ProduitsRepository $produitsRepository, Request $request): Response
+    {
+        $session = $request->getSession();
+        $recentlyViewed = $session->get('recently_viewed', []);
+        
+        if (!empty($recentlyViewed)) {
+            $produits = $produitsRepository->createQueryBuilder('p')
+                ->where('p.id IN (:ids)')
+                ->setParameter('ids', $recentlyViewed)
+                ->setMaxResults(8)
+                ->getQuery()
+                ->getResult();
+        } else {
+            $produits = $produitsRepository->findBy([], ['id' => 'DESC'], 8);
+        }
+        
+        return $this->render('main/recommandations.html.twig', [
+            'produits' => $produits
         ]);
     }
 }

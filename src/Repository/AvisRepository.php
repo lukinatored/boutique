@@ -14,10 +14,15 @@ class AvisRepository extends ServiceEntityRepository
 
     public function findByProduit(int $produitId): array
     {
-        return $this->findBy(['produit' => $produitId], ['createdAt' => 'DESC']);
+        return $this->createQueryBuilder('a')
+            ->where('a.produit = :produitId')
+            ->setParameter('produitId', $produitId)
+            ->orderBy('a.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
     }
 
-    public function getAverageNote(int $produitId): float
+    public function getMoyenne(int $produitId): float
     {
         $result = $this->createQueryBuilder('a')
             ->select('AVG(a.note)')
@@ -26,5 +31,15 @@ class AvisRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
         return round($result ?? 0, 1);
+    }
+
+    public function countByProduit(int $produitId): int
+    {
+        return $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->where('a.produit = :produitId')
+            ->setParameter('produitId', $produitId)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 }

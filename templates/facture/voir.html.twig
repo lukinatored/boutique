@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Facture {{ facture.numero }} - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="card fade-in-up">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-file-invoice"></i> Facture {{ facture.numero }}</h4>
+            <div>
+                <a href="{{ path('app_facture_pdf', {'id': facture.id}) }}" class="btn btn-gold btn-sm">
+                    <i class="fas fa-file-pdf"></i> Télécharger PDF
+                </a>
+                <a href="{{ path('app_account') }}" class="btn btn-secondary btn-sm">Retour</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5>Facturé à :</h5>
+                    <p><strong>{{ facture.client.prenom }} {{ facture.client.nom }}</strong><br>
+                    {{ facture.client.adresse }}<br>
+                    {{ facture.client.email }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <h5>Détails :</h5>
+                    <p><strong>Date :</strong> {{ facture.createdAt|date('d/m/Y H:i') }}<br>
+                    <strong>Commande :</strong> #{{ facture.commande.id }}<br>
+                    <strong>Statut :</strong> 
+                        <span class="badge {% if facture.statut == 'payee' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ facture.statut|capitalize }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Produit</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for detail in facture.commande.details %}
+                            <tr>
+                                <td>
+                                    {% if detail.produit %}
+                                        {{ detail.produit.nom }}
+                                    {% else %}
+                                        Montre personnalisée
+                                    {% endif %}
+                                </td>
+                                <td>{{ detail.quantite }}</td>
+                                <td>{{ detail.prix|number_format(2, ',', ' ') }} €</td>
+                                <td>{{ (detail.prix * detail.quantite)|number_format(2, ',', ' ') }} €</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-secondary">
+                            <td colspan="3" class="text-end"><strong>Sous-total</strong></td>
+                            <td><strong>{{ facture.total|number_format(2, ',', ' ') }} €</strong></td>
+                        </tr>
+                        <tr class="table-secondary">
+                            <td colspan="3" class="text-end"><strong>TVA (20%)</strong></td>
+                            <td><strong>{{ facture.tva|number_format(2, ',', ' ') }} €</strong></td>
+                        </tr>
+                        <tr class="table-dark">
+                            <td colspan="3" class="text-end"><strong>Total TTC</strong></td>
+                            <td><strong>{{ facture.totalTTC|number_format(2, ',', ' ') }} €</strong></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

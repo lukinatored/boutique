@@ -14,7 +14,7 @@ class Acheter
     private ?Produits $produit = null;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Commande::class)]
+    #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'details')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Commande $commande = null;
 

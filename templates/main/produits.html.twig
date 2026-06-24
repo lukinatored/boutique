@@ -1,21 +1,305 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos montres - WatchShop{% endblock %}
+{% block title %}Collection - WatchShop{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .animate-on-scroll {
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    .animate-on-scroll.fade-up { transform: translateY(40px); }
+    .animate-on-scroll.fade-up.visible { transform: translateY(0); }
+
+    .stagger-children > * {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .stagger-children.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(2) { transition-delay: 0.10s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(3) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(4) { transition-delay: 0.20s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(5) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(6) { transition-delay: 0.30s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(7) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+    .stagger-children.visible > *:nth-child(8) { transition-delay: 0.40s; opacity: 1; transform: translateY(0); }
+
+    .page-title {
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #0f0f1a;
+        text-align: center;
+    }
+    .page-divider {
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(90deg, #c9a84c, #f0d060);
+        margin: 15px auto 30px;
+        border-radius: 2px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        height: 100%;
+        position: relative;
+    }
+    .product-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+    }
+    .product-card .product-img {
+        height: 220px;
+        overflow: hidden;
+        background: #f5f3ed;
+        position: relative;
+    }
+    .product-card .product-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .product-card:hover .product-img img {
+        transform: scale(1.08);
+    }
+    .product-card .product-body {
+        padding: 18px 20px 20px;
+        background: white;
+    }
+    .product-card .product-body .name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0f1111;
+        margin-bottom: 4px;
+        transition: color 0.3s;
+    }
+    .product-card:hover .product-body .name {
+        color: #c9a84c;
+    }
+    .product-card .product-body .price {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #b12704;
+    }
+    .product-card .product-body .btn-detail {
+        color: #0066c0;
+        text-decoration: none;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 8px;
+        transition: gap 0.3s ease;
+    }
+    .product-card .product-body .btn-detail:hover {
+        text-decoration: underline;
+        gap: 10px;
+    }
+
+    .stock-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-top: 6px;
+    }
+    .stock-badge.in-stock {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+    .stock-badge.in-stock i {
+        color: #4caf50;
+        margin-right: 3px;
+    }
+    .stock-badge.low-stock {
+        background: #fff3e0;
+        color: #e65100;
+    }
+    .stock-badge.low-stock i {
+        color: #ff9800;
+        margin-right: 3px;
+    }
+    .stock-badge.out-of-stock {
+        background: #fce4ec;
+        color: #c62828;
+    }
+    .stock-badge.out-of-stock i {
+        color: #e53935;
+        margin-right: 3px;
+    }
+
+    .filter-bar {
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        margin-bottom: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+    .filter-bar .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .filter-bar .filter-group label {
+        font-size: 0.85rem;
+        color: #555;
+        font-weight: 500;
+    }
+    .filter-bar .filter-group select,
+    .filter-bar .filter-group input {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        background: white;
+    }
+    .filter-bar .filter-group select:focus,
+    .filter-bar .filter-group input:focus {
+        border-color: #c9a84c;
+        outline: none;
+    }
+    .filter-bar .btn-filter {
+        background: #c9a84c;
+        color: white;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background 0.3s;
+        cursor: pointer;
+    }
+    .filter-bar .btn-filter:hover {
+        background: #b8942e;
+    }
+
+    .no-products {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    .no-products i {
+        font-size: 4rem;
+        color: #ddd;
+        margin-bottom: 20px;
+    }
+    .no-products h3 {
+        color: #555;
+        font-weight: 400;
+    }
+    .no-products p {
+        color: #999;
+    }
+
+    @media (max-width: 768px) {
+        .product-card .product-img { height: 180px; }
+        .page-title { font-size: 1.6rem; }
+        .filter-bar { flex-direction: column; align-items: stretch; }
+        .filter-bar .filter-group { justify-content: center; }
+    }
+    @media (max-width: 480px) {
+        .product-card .product-img { height: 150px; }
+    }
+</style>
+{% endblock %}
 
 {% block body %}
-<h1 class="text-center mb-4">Nos montres</h1>
-<div class="row">
-    {% for produit in produits %}
-        <div class="col-md-3 mb-4">
-            <div class="card product-card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">{{ produit.nom }}</h5>
-                    <p class="card-text">{{ produit.description|slice(0, 80) }}...</p>
-                    <p class="price">{{ produit.prix|number_format(2, ',', ' ') }} €</p>
-                    <a href="{{ path('app_produit_detail', {'id': produit.id}) }}" class="btn btn-primary w-100">Voir détails</a>
-                </div>
-            </div>
+<div class="container py-4">
+    <h1 class="page-title animate-on-scroll fade-up">Notre collection</h1>
+    <div class="page-divider animate-on-scroll fade-up"></div>
+
+    <form method="get" action="{{ path('app_produits') }}" class="filter-bar animate-on-scroll fade-up">
+        <div class="filter-group">
+            <label>🔍 Recherche</label>
+            <input type="text" name="search" placeholder="Montre..." value="{{ app.request.query.get('search') }}" style="width:180px;">
         </div>
-    {% endfor %}
+        <div class="filter-group">
+            <label>💰 Prix</label>
+            <input type="number" name="prix_min" placeholder="Min" value="{{ app.request.query.get('prix_min') }}" style="width:80px;">
+            <span style="color:#aaa;">-</span>
+            <input type="number" name="prix_max" placeholder="Max" value="{{ app.request.query.get('prix_max') }}" style="width:80px;">
+        </div>
+        <div class="filter-group">
+            <label>📊 Trier</label>
+            <select name="tri">
+                <option value="">Nouveauté</option>
+                <option value="prix_asc" {% if app.request.query.get('tri') == 'prix_asc' %}selected{% endif %}>Prix ↑</option>
+                <option value="prix_desc" {% if app.request.query.get('tri') == 'prix_desc' %}selected{% endif %}>Prix ↓</option>
+                <option value="nom_asc" {% if app.request.query.get('tri') == 'nom_asc' %}selected{% endif %}>Nom A-Z</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-filter"><i class="fas fa-search"></i> Filtrer</button>
+        <a href="{{ path('app_produits') }}" class="btn-filter" style="background:#888;">🔄 Réinitialiser</a>
+    </form>
+
+    {% if produits|length > 0 %}
+        <div class="row stagger-children" id="productsGrid">
+            {% for produit in produits %}
+                <div class="col-md-3 col-6 mb-4">
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="/uploads/produits/{{ produit.image ?: 'default.jpg' }}" alt="{{ produit.nom }}">
+                        </div>
+                        <div class="product-body">
+                            <div class="name">{{ produit.nom }}</div>
+                            <div class="price">{{ produit.prix|number_format(2, ',', ' ') }} €</div>
+                            <div class="stock-badge 
+                                {% if produit.stock > 10 %}in-stock
+                                {% elseif produit.stock > 0 %}low-stock
+                                {% else %}out-of-stock{% endif %}">
+                                {% if produit.stock > 10 %}
+                                    <i class="fas fa-check-circle"></i> {{ produit.stock }} en stock
+                                {% elseif produit.stock > 0 %}
+                                    <i class="fas fa-exclamation-triangle"></i> Plus que {{ produit.stock }}
+                                {% else %}
+                                    <i class="fas fa-times-circle"></i> Rupture
+                                {% endif %}
+                            </div>
+                            <a href="{{ path('app_produit_detail', {'id': produit.id}) }}" class="btn-detail">Voir détails →</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-products">
+            <i class="fas fa-search"></i>
+            <h3>Aucun produit trouvé</h3>
+            <p>Essayez de modifier vos critères de recherche</p>
+            <a href="{{ path('app_produits') }}" class="btn-hero" style="display:inline-block;padding:10px 30px;background:#c9a84c;color:white;border-radius:50px;text-decoration:none;font-weight:600;">
+                Voir tous les produits
+            </a>
+        </div>
+    {% endif %}
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll, .stagger-children').forEach(function(el) {
+            observer.observe(el);
+        });
+    });
+</script>
 {% endblock %}

@@ -1,0 +1,3 @@
+Options +Indexes
+AllowOverride All
+Require all granted

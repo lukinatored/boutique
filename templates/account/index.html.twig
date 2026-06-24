@@ -3,22 +3,120 @@
 {% block title %}Mon compte - WatchShop{% endblock %}
 
 {% block body %}
-<h1 class="text-center mb-4">Mon compte</h1>
-<div class="row">
-    <div class="col-md-4">
-        <div class="list-group">
-            <a href="{{ path('app_account') }}" class="list-group-item list-group-item-action active">Mon profil</a>
-            <a href="{{ path('app_logout') }}" class="list-group-item list-group-item-action text-danger">Déconnexion</a>
+<div class="container py-4">
+    <h1 class="mb-4"><i class="fas fa-user text-primary"></i> Mon compte</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="list-group">
+                <a href="{{ path('app_account') }}" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-home"></i> Tableau de bord
+                </a>
+                <a href="{{ path('app_account_edit') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-edit"></i> Modifier profil
+                </a>
+                <a href="{{ path('app_account_change_password') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-key"></i> Changer mot de passe
+                </a>
+                <a href="{{ path('app_wishlist') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-heart"></i> Wishlist
+                </a>
+                <a href="{{ path('app_montre_perso_mes_creations') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-crown"></i> Mes créations
+                </a>
+                <a href="{{ path('app_createur_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-palette text-primary"></i> Espace créateur
+                </a>
+                <a href="{{ path('app_vendeur_dashboard') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-store"></i> Espace vendeur
+                </a>
+                <a href="{{ path('app_account_fidelite') }}" class="list-group-item list-group-item-action">
+                    <i class="fas fa-star text-warning"></i> Fidélité
+                </a>
+                <a href="{{ path('app_logout') }}" class="list-group-item list-group-item-action text-danger">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                </a>
+            </div>
         </div>
-    </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header bg-dark text-white"><h4 class="mb-0">Mes informations</h4></div>
-            <div class="card-body">
-                <p><strong>Nom :</strong> {{ user.nom }}</p>
-                <p><strong>Prénom :</strong> {{ user.prenom }}</p>
-                <p><strong>Email :</strong> {{ user.email }}</p>
-                <p><strong>Adresse :</strong> {{ user.adresse }}</p>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Mes informations</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Nom :</strong> {{ user.nom }}</p>
+                    <p><strong>Prénom :</strong> {{ user.prenom }}</p>
+                    <p><strong>Email :</strong> {{ user.email }}</p>
+                    <p><strong>Adresse :</strong> {{ user.adresse }}</p>
+                    <p><strong>Points fidélité :</strong> {{ user.pointsFidelite }}</p>
+                    <p><strong>Niveau :</strong> 
+                        <span class="badge 
+                            {% if user.niveau == 'platine' %}bg-primary
+                            {% elseif user.niveau == 'gold' %}bg-warning text-dark
+                            {% elseif user.niveau == 'argent' %}bg-secondary
+                            {% else %}bg-light text-dark{% endif %}">
+                            {{ user.niveau|capitalize }}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-box"></i> Mes commandes</h5>
+                </div>
+                <div class="card-body">
+                    {% if user.commandes|length > 0 %}
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#Commande</th>
+                                        <th>Total</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for commande in user.commandes %}
+                                        <tr>
+                                            <td>#{{ commande.id }}</td>
+                                            <td>{{ commande.total|number_format(2, ',', ' ') }} €</td>
+                                            <td>
+                                                <span class="badge 
+                                                    {% if commande.statut == 'en_attente' %}bg-warning text-dark
+                                                    {% elseif commande.statut == 'expediee' %}bg-info
+                                                    {% elseif commande.statut == 'en_livraison' %}bg-primary
+                                                    {% elseif commande.statut == 'livree' %}bg-success
+                                                    {% else %}bg-secondary{% endif %}">
+                                                    {{ commande.statut|capitalize }}
+                                                </span>
+                                            </td>
+                                            <td>{{ commande.createdAt|date('d/m/Y') }}</td>
+                                            <td>
+                                                <a href="{{ path('app_suivi', {'id': commande.id}) }}" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-truck"></i> Suivre
+                                                </a>
+                                                <a href="{{ path('app_livraison_simuler', {'id': commande.id}) }}" class="btn btn-sm btn-info">
+                                                    <i class="fas fa-play"></i> Simuler
+                                                </a>
+                                                {% for facture in commande.factures %}
+                                                    <a href="{{ path('app_facture_voir', {'id': facture.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                                        <i class="fas fa-file-invoice"></i> Facture
+                                                    </a>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center py-3">Aucune commande pour le moment.</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

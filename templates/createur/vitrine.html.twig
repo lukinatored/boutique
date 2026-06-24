@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vitrine de {{ createur.prenom }} - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="text-center mb-4">
+        <div style="font-size:4rem;">🎨</div>
+        <h1>Vitrine de {{ createur.prenom }} {{ createur.nom }}</h1>
+        <p class="text-muted">{{ montres|length }} création(s)</p>
+    </div>
+
+    <div class="row">
+        {% for montre in montres %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100">
+                    <div style="height:200px;overflow:hidden;background:#f5f3ed;display:flex;align-items:center;justify-content:center;">
+                        {% if montre.image %}
+                            <img src="/uploads/montres_perso/{{ montre.image }}" alt="{{ montre.nom }}" style="width:100%;height:100%;object-fit:cover;">
+                        {% else %}
+                            <i class="fas fa-clock fa-4x text-muted"></i>
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ montre.nom }}</h5>
+                        <p class="price">{{ montre.prix|number_format(2, ',', ' ') }} €</p>
+                        <p><small class="text-muted">{{ montre.boitier }} · {{ montre.bracelet }}</small></p>
+                        <a href="{{ path('app_montre_perso_detail', {'id': montre.id}) }}" class="btn btn-primary w-100">Voir</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <p>Aucune montre publiée pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_montre_perso') }}" class="btn btn-secondary">← Retour aux créations</a>
+    </div>
+</div>
+{% endblock %}

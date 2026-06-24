@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques - Admin{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4">📊 Statistiques</h1>
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-primary text-white">
+                <div class="card-body">
+                    <h3>{{ totalCommandes }}</h3>
+                    <p>Commandes</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white">
+                <div class="card-body">
+                    <h3>{{ totalProduits }}</h3>
+                    <p>Produits</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-dark">
+                <div class="card-body">
+                    <h3>{{ totalClients }}</h3>
+                    <p>Clients</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center bg-danger text-white">
+                <div class="card-body">
+                    <h3>{{ ca|number_format(2, ',', ' ') }} €</h3>
+                    <p>Chiffre d'affaires</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

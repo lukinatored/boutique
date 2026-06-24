@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Choisir le paiement - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h1 class="text-center mb-4 fade-in-up">Choisissez votre mode de paiement</h1>
+
+    <div class="row justify-content-center stagger">
+        <div class="col-md-5 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body p-4">
+                    <i class="fas fa-credit-card fa-4x text-primary mb-3"></i>
+                    <h4>Carte bancaire</h4>
+                    <p class="text-muted">Paiement sécurisé par Stripe</p>
+                    <ul class="text-start">
+                        <li>🔒 Sécurisé</li>
+                        <li>💳 Visa, Mastercard, Amex</li>
+                        <li>⚡ Instantané</li>
+                    </ul>
+                    <a href="{{ path('app_paiement_stripe', {'mode': 'carte'}) }}" class="btn btn-primary w-100">
+                        Payer par carte
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 mb-4">
+            <div class="card text-center h-100">
+                <div class="card-body p-4">
+                    <i class="fas fa-truck fa-4x text-success mb-3"></i>
+                    <h4>Paiement à la livraison</h4>
+                    <p class="text-muted">Payez à la réception</p>
+                    <ul class="text-start">
+                        <li>🚚 Livraison en 2-3 jours</li>
+                        <li>💰 Paiement au livreur</li>
+                        <li>📦 Retrait possible</li>
+                    </ul>
+                    <a href="{{ path('app_paiement_stripe', {'mode': 'livraison'}) }}" class="btn btn-success w-100">
+                        Payer à la livraison
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_cart') }}" class="btn btn-secondary">Retour au panier</a>
+    </div>
+</div>
+{% endblock %}

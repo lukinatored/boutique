@@ -1,14 +1,14 @@
 <?php
 namespace App\Repository;
 
-use App\Entity\Images;
+use App\Entity\Newsletter;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class ImagesRepository extends ServiceEntityRepository
+class NewsletterRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Images::class);
+        parent::__construct($registry, Newsletter::class);
     }
 }

@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fidélité - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4">💎 Programme de fidélité</h1>
+
+    <!-- Niveau actuel -->
+    <div class="card mb-4">
+        <div class="card-body text-center">
+            <div style="font-size:4rem;">{{ avantages.badge }}</div>
+            <h2>Niveau {{ avantages.label|capitalize }}</h2>
+            <p>{{ avantages.reduction }}% de réduction</p>
+        </div>
+    </div>
+
+    <!-- Progression -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between">
+                <span>Niveau actuel</span>
+                <span>{{ progression.actuel|capitalize }}</span>
+            </div>
+            <div class="progress mt-2" style="height:10px;">
+                <div class="progress-bar bg-dark" style="width:{{ progression.progress }}%;"></div>
+            </div>
+            <div class="d-flex justify-content-between mt-1">
+                <small>0 €</small>
+                <small>
+                    {% if progression.prochain %}
+                        {{ progression.prochain.seuil }} €
+                    {% else %}
+                        Max
+                    {% endif %}
+                </small>
+            </div>
+            <p class="mt-3 mb-0">Dépensé : {{ progression.total }} €</p>
+        </div>
+    </div>
+
+    <!-- Points -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ user.pointsFidelite }}</h3>
+                    <p class="text-muted">Points</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ user.nbCommandes }}</h3>
+                    <p class="text-muted">Commandes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Codes promo -->
+    <div class="card">
+        <div class="card-body">
+            <h5>🎁 Codes promo</h5>
+            {% if codes_promo|length > 0 %}
+                <ul class="list-unstyled">
+                    {% for code in codes_promo %}
+                        <li class="py-2 border-bottom">
+                            <strong>{{ code.code }}</strong> - {{ code.reduction }}% de réduction
+                            <small class="text-muted">(valable jusqu'au {{ code.dateExpiration|date('d/m/Y') }})</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucun code promo disponible</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ path('app_account') }}" class="btn btn-secondary">← Retour</a>
+    </div>
+</div>
+{% endblock %}

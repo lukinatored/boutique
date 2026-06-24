@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin - WatchShop{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-number { font-size: 2.5rem; font-weight: 700; }
+        .stat-label { color: #666; font-size: 0.9rem; }
+        .stat-icon { font-size: 2rem; opacity: 0.3; }
+        .card-dashboard { border: none; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); }
+        .card-dashboard .card-header { background: transparent; border-bottom: 2px solid #f0f0f0; font-weight: 600; }
+        .badge-warning { background: #ffc107; color: #000; }
+        .badge-info { background: #17a2b8; color: #fff; }
+        .badge-success { background: #28a745; color: #fff; }
+        .badge-danger { background: #dc3545; color: #fff; }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="fas fa-chart-line text-primary"></i> Dashboard</h1>
+        <span class="badge bg-success">{{ 'now'|date('d/m/Y H:i') }}</span>
+    </div>
+
+    <!-- Alertes stock -->
+    {% if stockBas|length > 0 %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle"></i>
+            <strong>Attention !</strong> Produits en stock bas :
+            {% for produit in stockBas %}
+                <span class="badge bg-danger">{{ produit.nom }} ({{ produit.stock }})</span>
+            {% endfor %}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% else %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i>
+            <strong>Tous les produits sont en stock suffisant !</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endif %}
+
+    <!-- Statistiques -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Clients</div>
+                        <div class="stat-number text-primary">{{ nbClients }}</div>
+                    </div>
+                    <div class="stat-icon text-primary"><i class="fas fa-users"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Commandes</div>
+                        <div class="stat-number text-success">{{ nbCommandes }}</div>
+                    </div>
+                    <div class="stat-icon text-success"><i class="fas fa-shopping-cart"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Produits</div>
+                        <div class="stat-number text-info">{{ nbProduits }}</div>
+                    </div>
+                    <div class="stat-icon text-info"><i class="fas fa-clock"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Chiffre d'affaires</div>
+                        <div class="stat-number text-warning">{{ ca|number_format(2, ',', ' ') }} €</div>
+                    </div>
+                    <div class="stat-icon text-warning"><i class="fas fa-euro-sign"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dernières commandes -->
+    <div class="card card-dashboard mt-4">
+        <div class="card-header">
+            <i class="fas fa-clock text-secondary"></i> Dernières commandes
+        </div>
+        <div class="card-body">
+            {% if dernieresCommandes|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#Commande</th>
+                                <th>Client</th>
+                                <th>Total</th>
+                                <th>Statut</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for commande in dernieresCommandes %}
+                                <tr>
+                                    <td>#{{ commande.id }}</td>
+                                    <td>{{ commande.client.prenom }} {{ commande.client.nom }}</td>
+                                    <td>{{ commande.total|number_format(2, ',', ' ') }} €</td>
+                                    <td>
+                                        <span class="badge 
+                                            {% if commande.statut == 'en_attente' %}badge-warning
+                                            {% elseif commande.statut == 'expediee' %}badge-info
+                                            {% elseif commande.statut == 'livree' %}badge-success
+                                            {% else %}badge-danger{% endif %}">
+                                            {{ commande.statut|capitalize }}
+                                        </span>
+                                    </td>
+                                    <td>{{ commande.createdAt|date('d/m/Y H:i') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p class="text-center text-muted py-3">Aucune commande enregistrée</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

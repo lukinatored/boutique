@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes notifications - WatchShop{% endblock %}
+
+{% block body %}
+<div class="container py-4">
+    <h1 class="mb-4"><i class="fas fa-bell text-warning"></i> Mes notifications</h1>
+
+    <div class="card">
+        <div class="card-body">
+            {% if notifications|length > 0 %}
+                <div class="list-group">
+                    {% for notif in notifications %}
+                        <div class="list-group-item {% if not notif.lu %}list-group-item-warning{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted">{{ notif.createdAt|date('d/m/Y H:i') }}</small>
+                                    <p class="mb-0">{{ notif.message }}</p>
+                                    <span class="badge 
+                                        {% if notif.type == 'commande' %}bg-primary
+                                        {% elseif notif.type == 'promo' %}bg-success
+                                        {% elseif notif.type == 'stock' %}bg-warning text-dark
+                                        {% else %}bg-secondary{% endif %}">
+                                        {{ notif.type|capitalize }}
+                                    </span>
+                                </div>
+                                {% if not notif.lu %}
+                                    <span class="badge bg-warning">Nouveau</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center text-muted py-4">Aucune notification</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

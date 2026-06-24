@@ -1,3 +1,7 @@
 framework:
     mailer:
+<<<<<<< HEAD
         dsn: 'null://null'
+=======
+        dsn: '%env(MAILER_DSN)%'
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

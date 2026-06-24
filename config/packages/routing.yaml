@@ -1,5 +1,13 @@
 framework:
     router:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        utf8: true
+
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         # Configure how to generate URLs in non-HTTP contexts, such as CLI commands.
         # See https://symfony.com/doc/current/routing.html#generating-urls-in-commands
         #default_uri: http://localhost
@@ -7,4 +15,12 @@ framework:
 when@prod:
     framework:
         router:
+<<<<<<< HEAD
             strict_requirements: null
+=======
+<<<<<<< HEAD
+            strict_requirements: null
+=======
+            strict_requirements: null
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

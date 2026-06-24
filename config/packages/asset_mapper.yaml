@@ -2,6 +2,7 @@ framework:
     asset_mapper:
         # The paths to make available to the asset mapper.
         paths:
+<<<<<<< HEAD
             - assets/
         missing_import_mode: strict
 
@@ -9,3 +10,6 @@ when@prod:
     framework:
         asset_mapper:
             missing_import_mode: warn
+=======
+            - assets/
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

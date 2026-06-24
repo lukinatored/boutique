@@ -8,15 +8,42 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "doctrine/dbal": "^3",
+<<<<<<< HEAD
         "doctrine/doctrine-bundle": "^2.16",
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.5",
         "dompdf/dompdf": "^3.1",
+=======
+<<<<<<< HEAD
+        "doctrine/doctrine-bundle": "^2.15",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/orm": "^3.4",
+        "symfony/console": "6.4.*",
+        "symfony/dotenv": "6.4.*",
+        "symfony/flex": "^2",
+        "symfony/form": "6.4.*",
+        "symfony/framework-bundle": "6.4.*",
+        "symfony/runtime": "6.4.*",
+        "symfony/security-csrf": "6.4.*",
+        "symfony/twig-bundle": "6.4.*",
+        "symfony/validator": "6.4.*",
+        "symfony/yaml": "6.4.*"
+    },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.63"
+=======
+        "doctrine/doctrine-bundle": "^2.16",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/orm": "^3.5",
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "knplabs/knp-paginator-bundle": "*",
         "nelmio/cors-bundle": "*",
         "phpdocumentor/reflection-docblock": "^5.6",
         "phpstan/phpdoc-parser": "^2.3",
+<<<<<<< HEAD
         "stripe/stripe-php": "^20.2",
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "symfony/apache-pack": "*",
         "symfony/asset": "6.4.*",
         "symfony/asset-mapper": "6.4.*",
@@ -48,9 +75,15 @@
         "symfony/web-link": "6.4.*",
         "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "6.4.*",
+<<<<<<< HEAD
         "symfonycasts/reset-password-bundle": "^1.25",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
+=======
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     },
     "config": {
         "allow-plugins": {
@@ -82,8 +115,17 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
+<<<<<<< HEAD
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
+=======
+<<<<<<< HEAD
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+=======
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "importmap:install": "symfony-cmd"
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -98,18 +140,37 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            "require": "6.4.*",
+            "docker": true
+        }
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
             "require": "6.4.*"
         }
     },
     "require-dev": {
+<<<<<<< HEAD
         "doctrine/doctrine-fixtures-bundle": "^4.3",
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "phpunit/phpunit": "^12.3",
         "symfony/browser-kit": "6.4.*",
         "symfony/css-selector": "6.4.*",
         "symfony/debug-bundle": "6.4.*",
+<<<<<<< HEAD
         "symfony/maker-bundle": "*",
         "symfony/phpunit-bridge": "^7.3",
         "symfony/stopwatch": "6.4.*",
         "symfony/web-profiler-bundle": "6.4.*"
+=======
+        "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^7.3",
+        "symfony/stopwatch": "6.4.*",
+        "symfony/web-profiler-bundle": "6.4.*"
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     }
 }

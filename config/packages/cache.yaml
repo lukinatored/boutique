@@ -16,4 +16,12 @@ framework:
 
         # Namespaced pools use the above "app" backend by default
         #pools:
+<<<<<<< HEAD
             #my.dedicated.cache: null
+=======
+<<<<<<< HEAD
+            #my.dedicated.cache: null
+=======
+            #my.dedicated.cache: null
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

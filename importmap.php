@@ -23,6 +23,12 @@ return [
         'path' => './vendor/symfony/stimulus-bundle/assets/dist/loader.js',
     ],
     '@hotwired/turbo' => [
+<<<<<<< HEAD
         'version' => '8.0.23',
     ],
 ];
+=======
+        'version' => '7.3.0',
+    ],
+];
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

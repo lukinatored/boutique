@@ -1,5 +1,14 @@
 {% extends 'base.html.twig' %}
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+{% block title %}Notre boutique{% endblock %}
+
+{% block body %}
+<h1>🛍️ Nos montres</h1>
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
 {% block title %}Boutique{% endblock %}
 
 {% block body %}
@@ -20,24 +29,57 @@
     </select>
     <button class="btn btn-primary">Filtrer</button>
 </form>
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
 
 <div class="row">
     {% for montre in montres %}
         <div class="col-md-4">
+<<<<<<< HEAD
             <div class="card mb-3">
                 {% if montre.imageUrl %}
                 <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+=======
+<<<<<<< HEAD
+            <div class="card mb-4 shadow-sm">
+                {% if montre.imageUrl %}
+                    <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+=======
+            <div class="card mb-3">
+                {% if montre.imageUrl %}
+                <img src="{{ montre.imageUrl }}" class="card-img-top" alt="{{ montre.nom }}">
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ montre.nom }}</h5>
                     <p class="card-text">{{ montre.prix }} €</p>
+<<<<<<< HEAD
                     <a href="{{ path('app_boutique_detail', {'id': montre.id}) }}" class="btn btn-primary">Détails</a>
                     <a href="{{ path('app_panier_ajouter', {'id': montre.id}) }}" class="btn btn-success">Ajouter au panier</a>
+=======
+<<<<<<< HEAD
+                    <a href="{{ path('app_boutique_detail', {id: montre.id}) }}" class="btn btn-primary">Voir détails</a>
+=======
+                    <a href="{{ path('app_boutique_detail', {'id': montre.id}) }}" class="btn btn-primary">Détails</a>
+                    <a href="{{ path('app_panier_ajouter', {'id': montre.id}) }}" class="btn btn-success">Ajouter au panier</a>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
                 </div>
             </div>
         </div>
     {% else %}
+<<<<<<< HEAD
         <p>Aucune montre disponible.</p>
+=======
+<<<<<<< HEAD
+        <p>Aucune montre trouvée.</p>
+=======
+        <p>Aucune montre disponible.</p>
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     {% endfor %}
 </div>
 {% endblock %}

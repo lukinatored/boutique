@@ -21,4 +21,12 @@ services:
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
+<<<<<<< HEAD
     # please note that last definitions always *replace* previous ones
+=======
+<<<<<<< HEAD
+    # please note that last definitions always *replace* previous ones
+=======
+    # please note that last definitions always *replace* previous ones
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

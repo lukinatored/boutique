@@ -9,7 +9,15 @@
         }
     },
     "doctrine/doctrine-bundle": {
+<<<<<<< HEAD
         "version": "2.16",
+=======
+<<<<<<< HEAD
+        "version": "2.15",
+=======
+        "version": "2.16",
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -22,6 +30,7 @@
             "src/Repository/.gitignore"
         ]
     },
+<<<<<<< HEAD
     "doctrine/doctrine-fixtures-bundle": {
         "version": "4.3",
         "recipe": {
@@ -34,6 +43,8 @@
             "src/DataFixtures/AppFixtures.php"
         ]
     },
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "doctrine/doctrine-migrations-bundle": {
         "version": "3.4",
         "recipe": {
@@ -47,6 +58,11 @@
             "migrations/.gitignore"
         ]
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "knplabs/knp-paginator-bundle": {
         "version": "v6.10.0"
     },
@@ -77,6 +93,7 @@
             "bin/phpunit"
         ]
     },
+<<<<<<< HEAD
     "stripe/stripe-php": {
         "version": "20.2",
         "recipe": {
@@ -89,6 +106,8 @@
             "config/packages/stripe.yaml"
         ]
     },
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/apache-pack": {
         "version": "1.0",
         "recipe": {
@@ -107,7 +126,11 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "6.4",
+<<<<<<< HEAD
             "ref": "c01c47af2ec66a74ec046eccb919cfe27d3464ec"
+=======
+            "ref": "5ad1308aa756d58f999ffbe1540d1189f5d7d14a"
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         },
         "files": [
             "assets/app.js",
@@ -116,6 +139,10 @@
             "importmap.php"
         ]
     },
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/console": {
         "version": "6.4",
         "recipe": {
@@ -128,6 +155,13 @@
             "bin/console"
         ]
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    "symfony/flex": {
+        "version": "2.7",
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/debug-bundle": {
         "version": "6.4",
         "recipe": {
@@ -142,6 +176,10 @@
     },
     "symfony/flex": {
         "version": "2.8",
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -172,6 +210,13 @@
             "src/Kernel.php"
         ]
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    "symfony/maker-bundle": {
+        "version": "1.63",
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/mailer": {
         "version": "6.4",
         "recipe": {
@@ -186,6 +231,10 @@
     },
     "symfony/maker-bundle": {
         "version": "1.64",
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -193,6 +242,11 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/messenger": {
         "version": "6.4",
         "recipe": {
@@ -238,6 +292,10 @@
             "ref": "dc13fec96bd527bd399c3c01f0aab915c67fd544"
         }
     },
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/routing": {
         "version": "6.4",
         "recipe": {
@@ -251,6 +309,11 @@
             "config/routes.yaml"
         ]
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/security-bundle": {
         "version": "6.4",
         "recipe": {
@@ -291,6 +354,10 @@
             "translations/.gitignore"
         ]
     },
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/twig-bundle": {
         "version": "6.4",
         "recipe": {
@@ -304,6 +371,11 @@
             "templates/base.html.twig"
         ]
     },
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/ux-turbo": {
         "version": "2.30",
         "recipe": {
@@ -313,6 +385,10 @@
             "ref": "9dd2778a116b6e5e01e5e1582d03d5a9e82630de"
         }
     },
+<<<<<<< HEAD
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     "symfony/validator": {
         "version": "6.4",
         "recipe": {
@@ -324,6 +400,11 @@
         "files": [
             "config/packages/validator.yaml"
         ]
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     },
     "symfony/web-profiler-bundle": {
         "version": "6.4",
@@ -366,6 +447,7 @@
             "webpack.config.js"
         ]
     },
+<<<<<<< HEAD
     "symfonycasts/reset-password-bundle": {
         "version": "1.25",
         "recipe": {
@@ -380,5 +462,10 @@
     },
     "twig/extra-bundle": {
         "version": "v3.21.0"
+=======
+    "twig/extra-bundle": {
+        "version": "v3.21.0"
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
     }
 }

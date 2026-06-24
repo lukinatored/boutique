@@ -1,5 +1,17 @@
 twig:
+<<<<<<< HEAD
     default_path: '%kernel.project_dir%/templates'
     cache: false
     debug: true
     strict_variables: true
+=======
+    file_name_pattern: '*.twig'
+
+when@test:
+    twig:
+<<<<<<< HEAD
+        strict_variables: true
+=======
+        strict_variables: true
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

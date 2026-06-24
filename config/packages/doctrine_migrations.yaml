@@ -3,4 +3,12 @@ doctrine_migrations:
         # namespace is arbitrary but should be different from App\Migrations
         # as migrations classes should NOT be autoloaded
         'DoctrineMigrations': '%kernel.project_dir%/migrations'
+<<<<<<< HEAD
     enable_profiler: false
+=======
+<<<<<<< HEAD
+    enable_profiler: false
+=======
+    enable_profiler: false
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

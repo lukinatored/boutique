@@ -1,5 +1,13 @@
 framework:
     validation:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        email_validation_mode: html5
+
+=======
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
         # Enables validator auto-mapping support.
         # For instance, basic validation constraints will be inferred from Doctrine's metadata.
         #auto_mapping:
@@ -8,4 +16,12 @@ framework:
 when@test:
     framework:
         validation:
+<<<<<<< HEAD
             not_compromised_password: false
+=======
+<<<<<<< HEAD
+            not_compromised_password: false
+=======
+            not_compromised_password: false
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d

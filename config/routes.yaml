@@ -2,4 +2,12 @@ controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
+<<<<<<< HEAD
     type: attribute
+=======
+<<<<<<< HEAD
+    type: attribute
+=======
+    type: attribute
+>>>>>>> 43fbb94 (Initial project Symfony boutique)
+>>>>>>> ef7cc5654fc803bae3e04cd492ab462c8f40373d
